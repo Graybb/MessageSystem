@@ -1,23 +1,58 @@
 package main
 
 import (
-	"crypto/rand"
-	"crypto/rsa"
+	"crypto/aes"
 	"fmt"
+	"encoding/hex"
 )
 
 func main() {
-	const (
-		securityparam int = 1000000
-	)
-	var (
-		publicKey int
-		secretKey int
-	)
-	fmt.Println("hello, world", securityparam)
-	rsa.GenerateKey(rand.Int(securityparam))
+ 
+    // cipher key
+    key := "thisis32bitlongpassphraseimusing"
+ 
+    // plaintext
+    pt := "This is a secret"
+ 
+    c := EncryptAES([]byte(key), pt)
+ 
+    // plaintext
+    fmt.Println(pt)
+ 
+    // ciphertext
+    fmt.Println(c)
+ 
+    // decrypt
+    DecryptAES([]byte(key), c)
 }
-
-func GenerateKey(securityparam int) int {
-	rsa.GenerateKey()
+ 
+func EncryptAES(key []byte, plaintext string) string {
+ 
+    c, err := aes.NewCipher(key)
+    CheckError(err)
+ 
+    out := make([]byte, len(plaintext))
+ 
+    c.Encrypt(out, []byte(plaintext))
+ 
+    return hex.EncodeToString(out)
+}
+ 
+func DecryptAES(key []byte, ct string) {
+    ciphertext, _ := hex.DecodeString(ct)
+ 
+    c, err := aes.NewCipher(key)
+    CheckError(err)
+ 
+    pt := make([]byte, len(ciphertext))
+    c.Decrypt(pt, ciphertext)
+ 
+    s := string(pt[:])
+    fmt.Println("DECRYPTED:", s)
+}
+ 
+func CheckError(err error) {
+    if err != nil {
+        panic(err)
+    }
 }
