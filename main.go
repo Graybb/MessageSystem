@@ -6,7 +6,7 @@ import ( // crypto import
 
 	"fmt"//general import
 
-    
+
 	"log"
 	"net/http"
 	"github.com/gorilla/mux" 
@@ -14,6 +14,11 @@ import ( // crypto import
 )
 
 func main() {
+    http.Handle("/", http.FileServer(http.Dir("./public")))
+    log.Print("Server starting at localhost:4444")
+    if err := http.ListenAndServe(":4444", nil); err != nil {
+        log.Fatal(err)
+    }
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, world!")
@@ -21,6 +26,11 @@ func main() {
 	log.Print("Server starting at localhost:4444")
 	http.ListenAndServe(":4444", r)
 }
+
+
+
+
+
 
 func cipher() {
 
