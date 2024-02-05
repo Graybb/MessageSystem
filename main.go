@@ -1,24 +1,26 @@
 package main
 
+//https://dzone.com/articles/building-a-concurrent-chat-app-with-go-and-websock Made by following this as shell
+
 import ( // crypto import
 	"crypto/aes"
 	"encoding/hex"
 
-	"fmt"//general import
-
+	"fmt" //general import
 
 	"log"
 	"net/http"
-	"github.com/gorilla/mux" 
+
+	"github.com/gorilla/mux"
 	//net import
 )
 
 func main() {
-    http.Handle("/", http.FileServer(http.Dir("./public")))
-    log.Print("Server starting at localhost:4444")
-    if err := http.ListenAndServe(":4444", nil); err != nil {
-        log.Fatal(err)
-    }
+	http.Handle("/", http.FileServer(http.Dir("./public")))
+	log.Print("Server starting at localhost:4444")
+	if err := http.ListenAndServe(":4444", nil); err != nil {
+		log.Fatal(err)
+	}
 	r := mux.NewRouter()
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, world!")
@@ -26,11 +28,6 @@ func main() {
 	log.Print("Server starting at localhost:4444")
 	http.ListenAndServe(":4444", r)
 }
-
-
-
-
-
 
 func cipher() {
 
