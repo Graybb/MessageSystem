@@ -5,6 +5,7 @@ package main
 import ( // crypto import
 	"crypto/aes"
 	"encoding/hex"
+	"os"
 
 	"fmt" //general import
 
@@ -12,13 +13,18 @@ import ( // crypto import
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	//net import
 )
 
 func main() {
 	http.Handle("/", http.FileServer(http.Dir("./public")))
 	log.Print("Server starting at localhost:4444")
-	if err := http.ListenAndServe(":4444", nil); err != nil {
+	err := godotenv.Load()
+	if err != nil {
+		  log.Fatal("Error loading .env file")}	
+	port := os.Getenv("PORT")
+	if err := http.ListenAndServe(":"+port, nil); err != nil {
 		log.Fatal(err)
 	}
 	r := mux.NewRouter()
