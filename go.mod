@@ -1,4 +1,4 @@
-module ChatApp
+module github.com/Graybb/MessageSystem
 
 go 1.21.6
 
